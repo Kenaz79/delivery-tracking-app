@@ -6,6 +6,7 @@ import StatCard from './components/StatCard.jsx';
 import LiveMap from './components/LiveMap.jsx';
 import DeliveryQueue from './components/DeliveryQueue.jsx';
 import RidersPanel from './components/RidersPanel.jsx';
+import RidersPage from './pages/RidersPage.jsx';
 import { fetchDeliveries, fetchRiders, isMockMode } from './api/deliveries.js';
 
 export default function App() {
@@ -13,6 +14,7 @@ export default function App() {
   const [riders, setRiders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [activePage, setActivePage] = useState('overview');
 
   useEffect(() => {
     Promise.all([fetchDeliveries(), fetchRiders()])
@@ -29,7 +31,12 @@ export default function App() {
 
   return (
     <div className="flex h-screen bg-bg text-ink font-body">
-      <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      <Sidebar
+        open={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+        activePage={activePage}
+        onNavigate={setActivePage}
+      />
 
       <div className="flex-1 flex flex-col min-w-0">
         <TopBar onMenuClick={() => setSidebarOpen(true)} mockMode={isMockMode} />
@@ -37,6 +44,8 @@ export default function App() {
         <main className="flex-1 overflow-y-auto px-4 lg:px-8 py-6">
           {loading ? (
             <p className="text-sm text-muted">Loading deliveries…</p>
+          ) : activePage === 'riders' ? (
+            <RidersPage riders={riders} />
           ) : (
             <div className="flex flex-col gap-6 max-w-[1400px]">
               <div>

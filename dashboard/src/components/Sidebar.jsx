@@ -1,13 +1,13 @@
 import { LayoutGrid, Package, Users, Settings, Truck } from 'lucide-react';
 
 const NAV_ITEMS = [
-  { icon: LayoutGrid, label: 'Overview', active: true },
-  { icon: Package, label: 'Deliveries' },
-  { icon: Users, label: 'Riders' },
-  { icon: Settings, label: 'Settings' },
+  { icon: LayoutGrid, label: 'Overview', page: 'overview' },
+  { icon: Package, label: 'Deliveries', page: 'deliveries' },
+  { icon: Users, label: 'Riders', page: 'riders' },
+  { icon: Settings, label: 'Settings', page: 'settings' },
 ];
 
-export default function Sidebar({ open, onClose }) {
+export default function Sidebar({ open, onClose, activePage, onNavigate }) {
   return (
     <>
       {open && (
@@ -32,16 +32,23 @@ export default function Sidebar({ open, onClose }) {
         </div>
 
         <nav className="flex flex-col gap-1">
-          {NAV_ITEMS.map(({ icon: Icon, label, active }) => (
-            <button
-              key={label}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-left transition-colors
-                ${active ? 'bg-violet-600/15 text-violet-400' : 'text-muted hover:bg-panel2 hover:text-ink'}`}
-            >
-              <Icon size={17} strokeWidth={2} />
-              {label}
-            </button>
-          ))}
+          {NAV_ITEMS.map(({ icon: Icon, label, page }) => {
+            const isActive = activePage === page;
+            return (
+              <button
+                key={label}
+                onClick={() => {
+                  onNavigate(page);
+                  onClose?.();
+                }}
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-left transition-colors
+                  ${isActive ? 'bg-violet-600/15 text-violet-400' : 'text-muted hover:bg-panel2 hover:text-ink'}`}
+              >
+                <Icon size={17} strokeWidth={2} />
+                {label}
+              </button>
+            );
+          })}
         </nav>
 
         <div className="mt-auto px-3 py-3 rounded-lg bg-panel2 border border-border">
