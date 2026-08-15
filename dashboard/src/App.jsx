@@ -7,6 +7,8 @@ import LiveMap from './components/LiveMap.jsx';
 import DeliveryQueue from './components/DeliveryQueue.jsx';
 import RidersPanel from './components/RidersPanel.jsx';
 import RidersPage from './pages/RidersPage.jsx';
+import DeliveriesPage from './pages/DeliveriesPage.jsx';
+import SettingsPage from './pages/SettingsPage.jsx';
 import { fetchDeliveries, fetchRiders, isMockMode } from './api/deliveries.js';
 
 export default function App() {
@@ -46,6 +48,10 @@ export default function App() {
             <p className="text-sm text-muted">Loading deliveries…</p>
           ) : activePage === 'riders' ? (
             <RidersPage riders={riders} />
+          ) : activePage === 'deliveries' ? (
+            <DeliveriesPage deliveries={deliveries} />
+          ) : activePage === 'settings' ? (
+            <SettingsPage mockMode={isMockMode} />
           ) : (
             <div className="flex flex-col gap-6 max-w-[1400px]">
               <div>
